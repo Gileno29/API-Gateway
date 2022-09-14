@@ -1,0 +1,21 @@
+version: '3'
+
+networks:
+  proxy:
+
+services:
+  proxy-api:
+      image: nginx
+      container_name: proxy-api
+      restart: unless-stopped
+      volumes:
+        - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+        - ./nginx/proxy.conf:/etc/nginx/conf.d/proxy.conf
+      ports:
+        - 80:80
+      networks:
+        - proxy
+          #- api
+          #   depends_on:
+          #- app-forum-api
+
