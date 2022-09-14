@@ -2,6 +2,8 @@ version: '3'
 
 networks:
   proxy:
+  services:
+    internal: true
 
 services:
   proxy-api:
@@ -14,8 +16,21 @@ services:
       ports:
         - 80:80
       networks:
+        - services
         - proxy
           #- api
           #   depends_on:
           #- app-forum-api
+  service01:
+    build: ./service01
+    container_name: flask-api
+    volumes:
+      - ./service01/api.py
 
+    ports:
+      - 5000:5000
+    networks:
+      - services
+
+    depends_on:
+      - proxy-api
