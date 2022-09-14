@@ -34,3 +34,16 @@ services:
 
     depends_on:
       - proxy-api
+
+  
+  service02:
+    build: ./service02
+    container_name: django-project
+    volumes:
+      - ./service02/
+    ports:
+      - 8000:8000
+    networks:
+      - services
+    depends_on:
+      - proxy-api
