@@ -37,13 +37,15 @@ services:
 
   
   service02:
-    build: ./service02
+    build: ./service02/
     container_name: django-project
+    command: python manage.py runserver 0.0.0.0:8000
     volumes:
       - ./service02/
     ports:
       - 8000:8000
     networks:
       - services
+      #- proxy
     depends_on:
       - proxy-api
