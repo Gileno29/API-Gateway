@@ -1,5 +1,4 @@
-<link rel='stylesheet' type='text/css' href='style/style.css'></link>
+# HOW TO IMPLEMENT AN API GATEWAY IN NGINX
 
-
-
-# TESTE
+### first we need to know what API Gateway is.
+- when we talking about microservices one of the most important points are the comunication between them, it is crucial for good comunication between services.
