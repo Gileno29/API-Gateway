@@ -3,7 +3,7 @@ app = Flask(__name__)
 app.config['DEBUG'] = True
 @app.route('/')
 def index():
-    return '<h1>Encontre uma ONG</h1><p>Este site é um protótipo de API para encontrar ONGs pelo Brasil.</p>'
+    return '<p>Este site é um protótipo de API</p>'
 
 
 @app.route('/teste')
