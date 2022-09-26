@@ -7,6 +7,98 @@ this allows for multiple benefits such as separation in the application layers a
 
 
 # PROJECT 
-This project consists in a implementation of an API gateway using NGINX, for example, two contentiary services were used, a simple implemntação of api prototype using Flask and a Djago server.
+This project consists in a implementation of an API gateway using NGINX, for example, two contentiary services were used, a simple implementation of api prototype using Flask and a Djago server.
+services can be accessed by endpoints that will be directed to the correct services by nginx
 
-the services can be access
+
+# CONFIGURATION API GATEWAY
+
+## nginx.conf
+    user nginx;
+    worker_processes 1;
+
+    error_log /var/log/nginx/error.log warn;
+    pid /var/run/nginx.pid;
+
+    events {
+        worker_connections 1024;
+    }
+
+    http {
+        include /etc/nginx/conf.d/proxy.conf;
+        include /etc/nginx/mime.types;
+        include /etc/nginx/fastcgi_params;
+        include /etc/nginx/scgi_params;
+        include /etc/nginx/uwsgi_params;
+        
+        index index.html index.htm;
+        
+        default_type application/octet-stream;
+
+        log_format main '$remote_addr - $remote_user [$time_local] "$request" '
+                        '$status $body_bytes_sent "$http_referer" '
+                        '"$http_user_agent" "$http_x_forwarded_for"';
+    
+        access_log off;
+        server_tokens off;
+        sendfile on;
+        tcp_nopush on;
+        tcp_nodelay on;
+        keepalive_timeout 65;
+
+        server {
+
+            listen 80 default_server;
+            listen [::]:80 default_server;
+            
+            server_name _;
+            root /usr/share/nginx/html;
+
+            location /flask {
+                proxy_pass http://flask-api:5000/;
+            }
+
+            location  /django {
+                proxy_pass http://django-project:8000/;
+            }
+            
+
+            location /images {
+            access_log off;
+            return 204;
+            }
+        }
+    }
+
+
+## proxy.conf
+    proxy_redirect off;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Host $server_name;
+
+# DOCKER FILES
+## SERVICE 01
+
+        FROM python:3
+
+        WORKDIR /usr/src/app
+
+        COPY requirements.txt ./
+        RUN pip install --no-cache-dir -r requirements.txt
+
+
+        ENTRYPOINT [ "python3" ]
+        COPY api.py ./
+
+        CMD ["api.py" ]
+
+## SERVICE 02
+    FROM python:3
+
+    WORKDIR /usr/src/app
+
+    COPY requirements.txt ./
+    RUN pip install --no-cache-dir -r requirements.txt
+    COPY . .
