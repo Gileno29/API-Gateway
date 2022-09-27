@@ -102,3 +102,54 @@ services can be accessed by endpoints that will be directed to the correct servi
     COPY requirements.txt ./
     RUN pip install --no-cache-dir -r requirements.txt
     COPY . .
+
+
+
+# DOCKER COMPOSE
+    version: '3'
+    networks:
+    proxy:
+    services:
+        internal: true
+
+    services:
+    proxy-api:
+        image: nginx
+        container_name: proxy-api
+        restart: unless-stopped
+        volumes:
+            - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+            - ./nginx/proxy.conf:/etc/nginx/conf.d/proxy.conf
+        ports:
+            - 80:80
+        networks:
+            - services
+            - proxy
+    service01:
+        build: ./service01
+        container_name: flask-api
+        volumes:
+        - ./service01/api.py
+
+        ports:
+        - 5000:5000
+        networks:
+        - services
+
+        depends_on:
+        - proxy-api
+    
+    service02:
+        build: ./service02/
+        container_name: django-project
+        command: python manage.py runserver 0.0.0.0:8000
+        volumes:
+        - ./service02/
+        ports:
+        - 8000:8000
+        networks:
+        - services
+        depends_on:
+        - proxy-api
+
+in the services declaration we have three services one that is the api gateway, it is responsible for  forwarding requisitions and the others two are the services that can be access by the clients
