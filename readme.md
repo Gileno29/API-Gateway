@@ -5,7 +5,6 @@ when we talking about microservices one of the most important points are the com
 With an API gateway it is possible to create a single entry point for requests for different services by centralizing them.
 this allows for multiple benefits such as separation in the application layers a single, extra layer of protection among others. More information can be seen in this <a href="https://blog.engdb.com.br/api-gateway/?utm_source=google&utm_medium=cpc&utm_campaign=Campanha+Smart+Tax+Platform+-+Leads&gclid=CjwKCAjwpqCZBhAbEiwAa7pXeZYIHDXreFEq3kMWd4FBNeRTBn0_P7GD-Olt1x6muBwm437WG0HZzRoCJLMQAvD_BwE">post</a>.
 
-
 # PROJECT 
 This project consists in a implementation of an API gateway using NGINX, for example, two contentiary services were used, a simple implementation of api prototype using Flask and a Djago server.
 services can be accessed by endpoints that will be directed to the correct services by nginx
@@ -152,4 +151,13 @@ services can be accessed by endpoints that will be directed to the correct servi
         depends_on:
         - proxy-api
 
-in the services declaration we have three services one that is the api gateway, it is responsible for  forwarding requisitions and the others two are the services that can be access by the clients
+in the services declaration we have three services one that is the api gateway, it is responsible for  forwarding requisitions and the others two are the services that can be access by the clients.
+
+
+
+# RUN THE PROJECT
+
+        docker-compose up -d 
+
+
+you can access the project with django by the URL: ```http://localhost/django/``` and the flask project by the URL:```http://localhost/django/```
