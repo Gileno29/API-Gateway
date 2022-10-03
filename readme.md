@@ -9,6 +9,7 @@ this allows for multiple benefits such as separation in the application layers a
 This project consists in a implementation of an API gateway using NGINX, for example, two contentiary services were used, a simple implementation of api prototype using Flask and a Djago server.
 services can be accessed by endpoints that will be directed to the correct services by nginx
 
+#
 
 # CONFIGURATION API GATEWAY
 
@@ -102,7 +103,7 @@ services can be accessed by endpoints that will be directed to the correct servi
     RUN pip install --no-cache-dir -r requirements.txt
     COPY . .
 
-
+#
 
 # DOCKER COMPOSE
     version: '3'
@@ -153,7 +154,7 @@ services can be accessed by endpoints that will be directed to the correct servi
 
 in the services declaration we have three services one that is the api gateway, it is responsible for  forwarding requisitions and the others two are the services that can be access by the clients.
 
-
+#
 
 # RUN THE PROJECT
 
